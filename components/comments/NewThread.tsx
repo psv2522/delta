@@ -32,8 +32,6 @@ export const NewThread = ({ children }: Props) => {
 
   /**
    * We're using the useCreateThread hook to create a new thread.
-   *
-   * useCreateThread: https://liveblocks.io/docs/api-reference/liveblocks-react#useCreateThread
    */
   const createThread = useCreateThread();
 

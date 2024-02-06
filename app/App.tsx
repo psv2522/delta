@@ -25,25 +25,11 @@ import { defaultNavElement } from "@/constants";
 import { ActiveElement, Attributes } from "@/types/type";
 
 const Home = () => {
-  /**
-   * useUndo and useRedo are hooks provided by Liveblocks that allow you to
-   * undo and redo mutations.
-   *
-   * useUndo: https://liveblocks.io/docs/api-reference/liveblocks-react#useUndo
-   * useRedo: https://liveblocks.io/docs/api-reference/liveblocks-react#useRedo
-   */
+  //hooks provided by Liveblocks that allow you to undo and redo mutations.
   const undo = useUndo();
   const redo = useRedo();
 
-  /**
-   * useStorage is a hook provided by Liveblocks that allows you to store
-   * data in a key-value store and automatically sync it with other users
-   * i.e., subscribes to updates to that selected data
-   *
-   * useStorage: https://liveblocks.io/docs/api-reference/liveblocks-react#useStorage
-   *
-   * Over here, we are storing the canvas objects in the key-value store.
-   */
+  //useStorage is a hook provided by Liveblocks that allows you to store
   const canvasObjects = useStorage((root) => root.canvasObjects);
 
   /**
@@ -89,11 +75,10 @@ const Home = () => {
    * selected form when user is editing the width, height, color etc
    * properties/attributes of the object.
    *
-   * Since we're using live storage to sync shapes across users in real-time,
+   * We are using live storage to sync shapes across users in real-time,
    * we have to re-render the canvas when the shapes are updated.
    * Due to this re-render, the selected shape is lost. We want to keep track
-   * of the selected shape so that we can keep it selected when the
-   * canvas re-renders.
+   * of the selected shape.
    */
   const activeObjectRef = useRef<fabric.Object | null>(null);
   const isEditingRef = useRef(false);
@@ -141,21 +126,15 @@ const Home = () => {
    * key-value store of liveblocks.
    * useMutation is a hook provided by Liveblocks that allows you to perform
    * mutations on liveblocks data.
-   *
-   * useMutation: https://liveblocks.io/docs/api-reference/liveblocks-react#useMutation
-   * delete: https://liveblocks.io/docs/api-reference/liveblocks-client#LiveMap.delete
-   * get: https://liveblocks.io/docs/api-reference/liveblocks-client#LiveMap.get
-   *
+   * 
    * We're using this mutation to delete a shape from the key-value store when
    * the user deletes a shape from the canvas.
    */
   const deleteShapeFromStorage = useMutation(({ storage }, shapeId) => {
     /**
      * canvasObjects is a Map that contains all the shapes in the key-value.
-     * Like a store. We can create multiple stores in liveblocks.
-     *
-     * delete: https://liveblocks.io/docs/api-reference/liveblocks-client#LiveMap.delete
-     */
+     * Like a store. We can create multiple stores in liveblocks.    
+     * */
     const canvasObjects = storage.get("canvasObjects");
     canvasObjects.delete(shapeId);
   }, []);
@@ -163,9 +142,6 @@ const Home = () => {
   /**
    * deleteAllShapes is a mutation that deletes all the shapes from the
    * key-value store of liveblocks.
-   *
-   * delete: https://liveblocks.io/docs/api-reference/liveblocks-client#LiveMap.delete
-   * get: https://liveblocks.io/docs/api-reference/liveblocks-client#LiveMap.get
    *
    * We're using this mutation to delete all the shapes from the key-value store when the user clicks on the reset button.
    */
@@ -206,11 +182,8 @@ const Home = () => {
     shapeData.objectId = objectId;
 
     const canvasObjects = storage.get("canvasObjects");
-    /**
-     * set is a method provided by Liveblocks that allows you to set a value
-     *
-     * set: https://liveblocks.io/docs/api-reference/liveblocks-client#LiveMap.set
-     */
+    
+    //set is a method provided by Liveblocks that allows you to set a value
     canvasObjects.set(objectId, shapeData);
   }, []);
 
@@ -277,13 +250,8 @@ const Home = () => {
       fabricRef,
     });
 
-    /**
-     * listen to the mouse down event on the canvas which is fired when the
-     * user clicks on the canvas
-     *
-     * Event inspector: http://fabricjs.com/events
-     * Event list: http://fabricjs.com/docs/fabric.Canvas.html#fire
-     */
+     //listen to the mouse down event on the canvas which is fired when the
+     //user clicks on the canvas
     canvas.on("mouse:down", (options) => {
       handleCanvasMouseDown({
         options,
@@ -294,13 +262,9 @@ const Home = () => {
       });
     });
 
-    /**
-     * listen to the mouse move event on the canvas which is fired when the
-     * user moves the mouse on the canvas
-     *
-     * Event inspector: http://fabricjs.com/events
-     * Event list: http://fabricjs.com/docs/fabric.Canvas.html#fire
-     */
+     //listen to the mouse move event on the canvas which is fired when the
+     //user moves the mouse on the canvas
+     
     canvas.on("mouse:move", (options) => {
       handleCanvaseMouseMove({
         options,
@@ -312,13 +276,9 @@ const Home = () => {
       });
     });
 
-    /**
-     * listen to the mouse up event on the canvas which is fired when the
-     * user releases the mouse on the canvas
-     *
-     * Event inspector: http://fabricjs.com/events
-     * Event list: http://fabricjs.com/docs/fabric.Canvas.html#fire
-     */
+     //listen to the mouse up event on the canvas which is fired when the
+     //user releases the mouse on the canvas
+     
     canvas.on("mouse:up", () => {
       handleCanvasMouseUp({
         canvas,
@@ -335,10 +295,7 @@ const Home = () => {
      * listen to the path created event on the canvas which is fired when
      * the user creates a path on the canvas using the freeform drawing
      * mode
-     *
-     * Event inspector: http://fabricjs.com/events
-     * Event list: http://fabricjs.com/docs/fabric.Canvas.html#fire
-     */
+     * */
     canvas.on("path:created", (options) => {
       handlePathCreated({
         options,
@@ -351,9 +308,6 @@ const Home = () => {
      * when the user modifies an object on the canvas. Basically, when the
      * user changes the width, height, color etc properties/attributes of
      * the object or moves the object on the canvas.
-     *
-     * Event inspector: http://fabricjs.com/events
-     * Event list: http://fabricjs.com/docs/fabric.Canvas.html#fire
      */
     canvas.on("object:modified", (options) => {
       handleCanvasObjectModified({
@@ -365,9 +319,6 @@ const Home = () => {
     /**
      * listen to the object moving event on the canvas which is fired
      * when the user moves an object on the canvas.
-     *
-     * Event inspector: http://fabricjs.com/events
-     * Event list: http://fabricjs.com/docs/fabric.Canvas.html#fire
      */
     canvas?.on("object:moving", (options) => {
       handleCanvasObjectMoving({
