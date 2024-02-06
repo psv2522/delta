@@ -6,6 +6,7 @@ Create .env.local file and add the following api key:
 
 NEXT_PUBLIC_LIVEBLOCKS_PUBLIC_KEY
 
+Now run the following commands:
 ```bash
 npm install
 npm run dev
